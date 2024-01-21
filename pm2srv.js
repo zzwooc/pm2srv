@@ -26,7 +26,7 @@ app.post("/pm2/save", (req, res) => {
 
 // 获取所有进程
 app.get("/pm2/jlist", (req, res) => {
-  exec("pm2 jlist --namespace custom", (error, stdout, stderr) => {
+  exec("pm2 jlist", (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -64,7 +64,7 @@ app.get("/pm2/jlist", (req, res) => {
 // 根据name获取特定进程
 app.get("/pm2/show/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 show ${name} --namespace custom`, (error, stdout, stderr) => {
+  exec(`pm2 show ${name}`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -80,7 +80,7 @@ app.get("/pm2/show/:name", (req, res) => {
 // 通过name启动特定进程
 app.post("/pm2/start/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 start ${name} --namespace custom`, (error, stdout, stderr) => {
+  exec(`pm2 start ${name}`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -96,7 +96,7 @@ app.post("/pm2/start/:name", (req, res) => {
 // 通过name重启特定进程
 app.post("/pm2/restart/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 restart ${name} --namespace custom`, (error, stdout, stderr) => {
+  exec(`pm2 restart ${name}`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -112,7 +112,7 @@ app.post("/pm2/restart/:name", (req, res) => {
 // 通过name停止特定进程
 app.post("/pm2/stop/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 stop ${name} --namespace custom`, (error, stdout, stderr) => {
+  exec(`pm2 stop ${name}`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -128,7 +128,7 @@ app.post("/pm2/stop/:name", (req, res) => {
 // 通过name删除特定进程
 app.delete("/pm2/delete/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 delete ${name} --namespace custom`, (error, stdout, stderr) => {
+  exec(`pm2 delete ${name}`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
