@@ -26,7 +26,7 @@ app.post("/pm2/save", (req, res) => {
 
 // 获取所有进程
 app.get("/pm2/jlist", (req, res) => {
-  exec("pm2 jlist", (error, stdout, stderr) => {
+  exec("pm2 jlist --namespace default", (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -64,7 +64,7 @@ app.get("/pm2/jlist", (req, res) => {
 // 根据name获取特定进程
 app.get("/pm2/show/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 show ${name}`, (error, stdout, stderr) => {
+  exec(`pm2 show ${name} --namespace default`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -80,7 +80,7 @@ app.get("/pm2/show/:name", (req, res) => {
 // 通过name启动特定进程
 app.post("/pm2/start/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 start ${name}`, (error, stdout, stderr) => {
+  exec(`pm2 start ${name} --namespace default`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -96,7 +96,7 @@ app.post("/pm2/start/:name", (req, res) => {
 // 通过name重启特定进程
 app.post("/pm2/restart/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 restart ${name}`, (error, stdout, stderr) => {
+  exec(`pm2 restart ${name} --namespace default`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -112,7 +112,7 @@ app.post("/pm2/restart/:name", (req, res) => {
 // 通过name停止特定进程
 app.post("/pm2/stop/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 stop ${name}`, (error, stdout, stderr) => {
+  exec(`pm2 stop ${name} --namespace default`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -128,7 +128,7 @@ app.post("/pm2/stop/:name", (req, res) => {
 // 通过name删除特定进程
 app.delete("/pm2/delete/:name", (req, res) => {
   const { name } = req.params;
-  exec(`pm2 delete ${name}`, (error, stdout, stderr) => {
+  exec(`pm2 delete ${name} --namespace default`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -145,7 +145,7 @@ app.delete("/pm2/delete/:name", (req, res) => {
 app.get("/pm2/logs/:name", (req, res) => {
   const { name } = req.params;
   const { lines } = req.query;
-  exec(`pm2 logs ${name} --nostream --timestamp --raw --lines ${lines}`, (error, stdout, stderr) => {
+  exec(`pm2 logs ${name} --nostream --timestamp --raw --lines ${lines} --namespace default`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
       return;
@@ -161,7 +161,7 @@ app.get("/pm2/logs/:name", (req, res) => {
 // 启动新上传的脚本
 app.post("/pm2/start", (req, res) => {
   const { filename, name, cluster, instances, args } = req.body;
-  let script = `pm2 start ./uploads/${filename} --name ${name}`;
+  let script = `pm2 start ./uploads/${filename} --name ${name} --namespace default`;
   script += cluster ? ` -i ${instances}` : "";
   script += args ? ` -- ${args}` : "";
   exec(script, (error, stdout, stderr) => {
