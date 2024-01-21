@@ -39,23 +39,25 @@ app.get("/pm2/jlist", (req, res) => {
     const out = [];
     for (let i = 0; i < data.length; i++) {
       const item = data[i];
-      const env = data[i].pm2_env;
-      out.push({
-        id: item.pm_id,
-        name: item.name,
-        namespace: env.namespace,
-        mode: env.exec_mode,
-        instances: env.instances,
-        uptime: env.pm_uptime,
-        created_at: env.created_at,
-        restarts: env.restart_time,
-        status: env.status,
-        cpu: item.monit.cpu,
-        mem: item.monit.memory,
-        watch: env.watch,
-        args: env.args,
-        file: env.pm_exec_path.replace(env.pm_cwd, ""),
-      });
+      const env = item.pm2_env;
+      if (env.namespace === "custom") {
+        out.push({
+          id: item.pm_id,
+          name: item.name,
+          namespace: env.namespace,
+          mode: env.exec_mode,
+          instances: env.instances,
+          uptime: env.pm_uptime,
+          created_at: env.created_at,
+          restarts: env.restart_time,
+          status: env.status,
+          cpu: item.monit.cpu,
+          mem: item.monit.memory,
+          watch: env.watch,
+          args: env.args,
+          file: env.pm_exec_path.replace(env.pm_cwd, ""),
+        });
+      }
     }
     res.json(out);
   });
@@ -145,17 +147,20 @@ app.delete("/pm2/delete/:name", (req, res) => {
 app.get("/pm2/logs/:name", (req, res) => {
   const { name } = req.params;
   const { lines } = req.query;
-  exec(`pm2 logs ${name} --nostream --timestamp --raw --lines ${lines} --namespace custom`, (error, stdout, stderr) => {
-    if (error) {
-      res.status(500).json({ error: error.message });
-      return;
+  exec(
+    `pm2 logs ${name} --nostream --timestamp --raw --lines ${lines} --namespace custom`,
+    (error, stdout, stderr) => {
+      if (error) {
+        res.status(500).json({ error: error.message });
+        return;
+      }
+      if (stderr) {
+        res.status(500).json({ error: stderr });
+        return;
+      }
+      res.json(stdout);
     }
-    if (stderr) {
-      res.status(500).json({ error: stderr });
-      return;
-    }
-    res.json(stdout);
-  });
+  );
 });
 
 // 启动新上传的脚本
