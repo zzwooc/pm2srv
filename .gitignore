@@ -11,6 +11,7 @@ yarn.lock*
 bun.lockb*
 
 uploads/*
+!uploads/.gitkeep
 node_modules
 dist
 dist-ssr
