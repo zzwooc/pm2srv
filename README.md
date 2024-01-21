@@ -10,7 +10,7 @@ npm install
 2. Run
 
 ```bash
-pm2 run pm2srv.js --name pm2srv
+pm2 run pm2srv.js --name pm2srv --namespace system
 ```
 
 #### PM2MAN
