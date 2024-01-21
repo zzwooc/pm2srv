@@ -10,7 +10,7 @@ app.use(cors());
 const PORT = 3000;
 
 // 通过name停止特定进程
-app.get("/pm2/save", (req, res) => {
+app.post("/pm2/save", (req, res) => {
   exec(`pm2 save --force`, (error, stdout, stderr) => {
     if (error) {
       res.status(500).json({ error: error.message });
