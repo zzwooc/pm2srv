@@ -126,6 +126,23 @@ app.delete("/pm2/delete/:name", (req, res) => {
   });
 });
 
+// 通过name停止特定进程
+app.get("/pm2/logs/:name", (req, res) => {
+  const { name } = req.params;
+  const { lines } = req.query;
+  exec(`pm2 logs ${name} --nostream --timestamp --raw --lines ${lines}`, (error, stdout, stderr) => {
+    if (error) {
+      res.status(500).json({ error: error.message });
+      return;
+    }
+    if (stderr) {
+      res.status(500).json({ error: stderr });
+      return;
+    }
+    res.json(stdout);
+  });
+});
+
 // 启动新上传的脚本
 app.post("/pm2/start", (req, res) => {
   const { filename, name, cluster, instances, args } = req.body;
