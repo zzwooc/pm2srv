@@ -12,6 +12,8 @@ bun.lockb*
 
 uploads/*
 !uploads/.gitkeep
+*.config.js
+
 node_modules
 dist
 dist-ssr
