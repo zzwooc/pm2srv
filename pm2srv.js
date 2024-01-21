@@ -9,6 +9,21 @@ app.use(cors());
 
 const PORT = 3000;
 
+// 通过name停止特定进程
+app.get("/pm2/save", (req, res) => {
+  exec(`pm2 save --force`, (error, stdout, stderr) => {
+    if (error) {
+      res.status(500).json({ error: error.message });
+      return;
+    }
+    if (stderr) {
+      res.status(500).json({ error: stderr });
+      return;
+    }
+    res.json({ message: `所有进程保存成功` });
+  });
+});
+
 // 获取所有进程
 app.get("/pm2/jlist", (req, res) => {
   exec("pm2 jlist", (error, stdout, stderr) => {
