@@ -11,11 +11,12 @@ npm install
 
 ```bash
 pm2 run pm2srv.js --name pm2srv
+```
 
-#### PM2SRV
+#### PM2MAN
 
 [PM2MAN](https://github.com/zzwooc/pm2man)
 
 #### Screenshot
 
-![](https://github.com/zzwooc/pm2man/blob/main/screenshot.png)
+![screenshot.png](https://github.com/zzwooc/pm2man/blob/main/screenshot.png)
