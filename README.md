@@ -10,7 +10,8 @@ npm install
 2. Run
 
 ```bash
-pm2 start pm2srv.js --name pm2srv
+npm install forever -g
+forever start pm2srv.js
 ```
 
 #### PM2MAN
